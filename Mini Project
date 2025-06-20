@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Resume Builder</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f2f2f2;
+    }
+    header {
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 1rem;
+    }
+    form {
+      flex: 1;
+      padding: 1rem;
+      background: white;
+      margin-right: 1rem;
+      border-radius: 8px;
+      min-width: 300px;
+    }
+    form input, form textarea, form button {
+      display: block;
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+    }
+    .preview {
+      flex: 1;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 8px;
+      min-width: 300px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .progress-bar {
+      height: 5px;
+      background: #4CAF50;
+      width: 0%;
+      transition: width 0.3s;
+    }
+    @media screen and (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Interactive Resume Builder</h1>
+  </header>
+
+  <div class="progress-bar" id="progress"></div>
+
+  <div class="container">
+    <form id="resumeForm">
+      <input type="text" placeholder="Full Name" id="name" />
+      <input type="email" placeholder="Email" id="email" />
+      <input type="text" placeholder="Phone Number" id="phone" />
+      <textarea placeholder="Profile Summary" id="summary"></textarea>
+
+      <div id="educationContainer">
+        <input type="text" placeholder="Education" class="education" />
+      </div>
+      <button type="button" onclick="addField('educationContainer', 'education')">Add Education</button>
+
+      <label>Skills:</label>
+      <label><input type="checkbox" class="skill" value="HTML"/> HTML</label>
+      <label><input type="checkbox" class="skill" value="CSS"/> CSS</label>
+      <label><input type="checkbox" class="skill" value="JavaScript"/> JavaScript</label>
+
+      <div id="experienceContainer">
+        <input type="text" placeholder="Experience" class="experience" />
+      </div>
+      <button type="button" onclick="addField('experienceContainer', 'experience')">Add Experience</button>
+
+      <button type="button" onclick="clearForm()">Clear</button>
+      <button type="button" onclick="downloadPDF()">Download PDF</button>
+    </form>
+
+    <div class="preview" id="resumePreview">
+      <h2 id="previewName">Your Name</h2>
+      <p id="previewEmail"></p>
+      <p id="previewPhone"></p>
+      <p id="previewSummary"></p>
+      <h3>Education</h3>
+      <ul id="previewEducation"></ul>
+      <h3>Skills</h3>
+      <ul id="previewSkills"></ul>
+      <h3>Experience</h3>
+      <ul id="previewExperience"></ul>
+    </div>
+  </div>
+
+  <script>
+    const inputs = document.querySelectorAll('#resumeForm input, #resumeForm textarea');
+
+    inputs.forEach(input => {
+      input.addEventListener('input', updatePreview);
+    });
+
+    document.querySelectorAll('.skill').forEach(chk => {
+      chk.addEventListener('change', updatePreview);
+    });
+
+    function addField(containerId, className) {
+      const container = document.getElementById(containerId);
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = className.charAt(0).toUpperCase() + className.slice(1);
+      input.className = className;
+      input.addEventListener('input', updatePreview);
+      container.appendChild(input);
+    }
+
+    function updatePreview() {
+      document.getElementById('previewName').innerText = document.getElementById('name').value || 'Your Name';
+      document.getElementById('previewEmail').innerText = document.getElementById('email').value;
+      document.getElementById('previewPhone').innerText = document.getElementById('phone').value;
+      document.getElementById('previewSummary').innerText = document.getElementById('summary').value;
+
+      const eduList = document.getElementById('previewEducation');
+      eduList.innerHTML = '';
+      document.querySelectorAll('.education').forEach(input => {
+        if (input.value) eduList.innerHTML += `<li>${input.value}</li>`;
+      });
+
+      const skillsList = document.getElementById('previewSkills');
+      skillsList.innerHTML = '';
+      document.querySelectorAll('.skill:checked').forEach(chk => {
+        skillsList.innerHTML += `<li>${chk.value}</li>`;
+      });
+
+      const expList = document.getElementById('previewExperience');
+      expList.innerHTML = '';
+      document.querySelectorAll('.experience').forEach(input => {
+        if (input.value) expList.innerHTML += `<li>${input.value}</li>`;
+      });
+
+      updateProgress();
+    }
+
+    function clearForm() {
+      document.getElementById('resumeForm').reset();
+      document.getElementById('educationContainer').innerHTML = '<input type="text" placeholder="Education" class="education">';
+      document.getElementById('experienceContainer').innerHTML = '<input type="text" placeholder="Experience" class="experience">';
+      updatePreview();
+    }
+
+    function updateProgress() {
+      const totalFields = document.querySelectorAll('#resumeForm input, #resumeForm textarea').length;
+      let filled = 0;
+      document.querySelectorAll('#resumeForm input, #resumeForm textarea').forEach(input => {
+        if (input.value.trim()) filled++;
+      });
+      const percent = (filled / totalFields) * 100;
+      document.getElementById('progress').style.width = percent + '%';
+    }
+
+    function downloadPDF() {
+      const element = document.getElementById('resumePreview');
+      html2pdf().from(element).save('resume.pdf');
+    }
+  </script>
+</body>
+</html>

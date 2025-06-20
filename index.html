@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interactive Recipe Card</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="recipe-card">
+    <h1 class="title">Chocolate Cake</h1>
+
+    <img 
+      src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=500&q=80" 
+      alt="Chocolate Cake" 
+      class="recipe-image" 
+    />
+
+    <div class="info">
+      <div>Preparation time: 5 minutes</div>
+      <div>Servings: 8</div>
+    </div>
+
+    <button id="toggleIngredients">Show Ingredients</button>
+    <ul id="ingredientsList" class="ingredients hidden">
+      <li>2 cups all-purpose flour</li>
+      <li>1 ¾ cups sugar</li>
+      <li>¾ cup cocoa powder</li>
+      <li>1 ½ tsp baking powder</li>
+      <li>1 ½ tsp baking soda</li>
+      <li>1 tsp salt</li>
+      <li>2 eggs</li>
+      <li>1 cup milk</li>
+      <li>½ cup vegetable oil</li>
+      <li>2 tsp vanilla extract</li>
+      <li>1 cup boiling water</li>
+    </ul>
+
+    <button id="toggleSteps">Show Steps</button>
+    <ol id="stepsList" class="steps hidden">
+      <li>Preheat oven to 350°F (175°C).</li>
+      <li>Grease and flour two 9-inch round baking pans.</li>
+      <li>Combine dry ingredients in a large bowl.</li>
+      <li>Add eggs, milk, oil, and vanilla. Mix until smooth.</li>
+      <li>Stir in boiling water (batter will be thin).</li>
+      <li>Pour batter into prepared pans.</li>
+      <li>Bake for 30-35 minutes or until a toothpick comes out clean.</li>
+      <li>Cool for 10 minutes, then remove from pans to wire racks.</li>
+      <li>Frost as desired once completely cooled.</li>
+    </ol>
+
+    <div class="progress-bar-container">
+      <div id="progressBar" class="progress-bar"></div>
+    </div>
+
+    <div id="timer">Timer: 00:00</div>
+
+    <button id="startCooking">Start Cooking</button>
+    <button id="nextStep" disabled>Next Step</button>
+    <button id="printRecipe">Print Recipe</button>
+  </div>
+  <script src="script.js"></script>
+
+</body>
+</html>

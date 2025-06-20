@@ -1,0 +1,216 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  body {
+    background: #f7f4f1;
+    padding: 20px;
+  }
+  
+  /* Recipe Card Container */
+  .recipe-card {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    max-width: 500px;
+    width: 100%;
+    padding: 20px;
+    margin: 20px auto;
+    box-sizing: border-box;
+  }
+  
+  /* Title */
+  .title {
+    font-size: 2rem;
+    color: #4b2e2e;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  /* Image */
+  .recipe-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  
+  /* Info Section */
+  .info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    color: #555;
+  }
+  
+  /* Buttons */
+  button {
+    display: inline-block;
+    background: #8b4513;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: auto;
+  }
+  
+  button:hover {
+    background: #a0522d;
+  }
+  
+  button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Print Recipe Button */
+  #printRecipe {
+    background: #006400;
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px 0;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  #printRecipe:hover {
+    background: #008000;
+  }
+  
+  /* Lists */
+  ul, ol {
+    list-style: inside;
+    margin: 10px 0;
+    padding-left: 20px;
+  }
+  
+  li {
+    margin: 8px 0;
+    transition: all 0.3s ease;
+  }
+  
+  li:hover {
+    color: #8b4513;
+    text-decoration: underline;
+  }
+  
+  /* Hidden class for toggling visibility */
+  .hidden {
+    display: none;
+  }
+  
+  /* Progress Bar Container */
+  .progress-bar-container {
+    background: #ddd;
+    height: 10px;
+    width: 100%;
+    border-radius: 5px;
+    margin: 15px 0;
+    overflow: hidden;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #8b4513;
+    transition: width 0.5s ease-in-out;
+  }
+  
+  /* Timer Display */
+  #timer {
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    .recipe-card {
+      padding: 15px;
+      border-radius: 10px;
+    }
+  
+    .title {
+      font-size: 1.5rem;
+    }
+  
+    button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  
+    ul, ol {
+      padding-left: 15px;
+    }
+  
+    .info {
+      flex-direction: column;
+      gap: 5px;
+      text-align: center;
+    }
+  }
+  
+  /* Print-friendly Styles */
+  @media print {
+    body {
+      background: white;
+      padding: 0;
+      margin: 0;
+    }
+  
+    .recipe-card {
+      box-shadow: none;
+      border: none;
+      margin: 0;
+      max-width: 100%;
+      padding: 0;
+    }
+  
+    .recipe-card, .title, .recipe-image, .info, .ingredients, .steps, #timer {
+      display: block !important;
+    }
+  
+    button,
+    .progress-bar-container,
+    #progressBar,
+    .hidden,
+    #startCooking,
+    #nextStep,
+    #toggleIngredients,
+    #toggleSteps,
+    #printRecipe {
+      display: none !important;
+    }
+  
+    .title {
+      text-align: left;
+      font-size: 24px;
+      color: black;
+    }
+  
+    ul, ol {
+      padding-left: 20px;
+    }
+  
+    li {
+      font-size: 16px;
+      color: black;
+    }
+  
+    #timer {
+      margin-top: 20px;
+      font-size: 16px;
+      color: black;
+    }
+  }
+  

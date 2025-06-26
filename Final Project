@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Subject To-Do List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0adbee;
+      padding: 30px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    input, select, button {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #091c11;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .subject-group {
+      margin-bottom: 30px;
+    }
+
+    .subject-group h3 {
+      margin-bottom: 10px;
+      color: #007bff;
+    }
+
+    .task {
+      background: #fff;
+      padding: 10px;
+      border-left: 5px solid #007bff;
+      border-radius: 5px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    .task-actions button {
+      background: #dc3545;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .task-actions button:hover {
+      background: #c82333;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Student Subject To-Do List</h1>
+
+  <div class="form-group">
+    <input type="text" id="taskInput" placeholder="Enter your task" required />
+    <select id="subjectInput">
+      <option value="">Select Subject</option>
+      <option value="Math">Math</option>
+      <option value="Science">Science</option>
+      <option value="English">English</option>
+      <option value="Social">History</option>
+      <option value="General Knowledge">General Knowledge</option>
+      <option value="Computer">Computer</option>
+    </select>
+    <button onclick="addTask()">Add</button>
+  </div>
+
+  <div id="taskContainer"></div>
+
+  <script>
+    let tasks = JSON.parse(localStorage.getItem("subjectTasks")) || [];
+
+    function addTask() {
+      const taskText = document.getElementById("taskInput").value.trim();
+      const subject = document.getElementById("subjectInput").value;
+
+      if (taskText && subject) {
+        tasks.push({ text: taskText, subject: subject, done: false });
+        saveAndRender();
+        document.getElementById("taskInput").value = "";
+        document.getElementById("subjectInput").value = "";
+      }
+    }
+
+    function toggleTask(index) {
+      tasks[index].done = !tasks[index].done;
+      saveAndRender();
+    }
+
+    function deleteTask(index) {
+      tasks.splice(index, 1);
+      saveAndRender();
+    }
+
+    function saveAndRender() {
+      localStorage.setItem("subjectTasks", JSON.stringify(tasks));
+      renderTasks();
+    }
+
+    function renderTasks() {
+      const container = document.getElementById("taskContainer");
+      container.innerHTML = "";
+
+      const subjects = [...new Set(tasks.map(t => t.subject))];
+
+      subjects.forEach(subject => {
+        const subjectDiv = document.createElement("div");
+        subjectDiv.className = "subject-group";
+        const heading = document.createElement("h3");
+        heading.textContent = subject;
+        subjectDiv.appendChild(heading);
+
+        tasks.forEach((task, index) => {
+          if (task.subject === subject) {
+            const taskDiv = document.createElement("div");
+            taskDiv.className = "task";
+            if (task.done) taskDiv.classList.add("completed");
+            taskDiv.onclick = () => toggleTask(index);
+
+            const span = document.createElement("span");
+            span.textContent = task.text;
+            taskDiv.appendChild(span);
+
+            const actions = document.createElement("div");
+            actions.className = "task-actions";
+            const delBtn = document.createElement("button");
+            delBtn.textContent = "Delete";
+            delBtn.onclick = (e) => {
+              e.stopPropagation(); // avoid triggering toggle
+              deleteTask(index);
+            };
+            actions.appendChild(delBtn);
+            taskDiv.appendChild(actions);
+
+            subjectDiv.appendChild(taskDiv);
+          }
+        });
+
+        container.appendChild(subjectDiv);
+      });
+    }
+
+    renderTasks();
+  </script>
+</body>
+</html>
